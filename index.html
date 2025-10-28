@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crack Code Lab - Learn, Build, and Grow</title>
+    
+    <!-- Google Fonts: Poppins, Inter, Open Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Open+Sans:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <!-- RemixIcon for Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet"/>
+
+    <style>
+        /* --- 1. Global Reset & Root Variables --- */
+        :root {
+            --orange: #FF6B00;
+            --purple: #7B2FF7;
+            --neon-mint: #00FFC6;
+            --dark-charcoal: #0D0D0D;
+            --soft-gray: #F5F5F5;
+            --text-light: #FFFFFF;
+            --text-muted: #CCCCCC;
+            
+            --font-heading: 'Poppins', sans-serif;
+            --font-subheading: 'Inter', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            
+            --gradient-primary: linear-gradient(135deg, var(--orange), var(--purple));
+            --radius-smooth: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* Added smooth scroll behavior */
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--dark-charcoal);
+            color: var(--text-muted);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            color: var(--text-light);
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        h1 { font-size: 3.5rem; } /* 56px */
+        h2 { font-size: 2.5rem; } /* 40px */
+        h3 { font-size: 1.5rem; } /* 24px */
+
+        p {
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-family: var(--font-subheading);
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- 2. Buttons --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--text-light);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(123, 47, 247, 0.7);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 2px solid var(--text-light);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--text-light);
+            color: var(--dark-charcoal);
+        }
+
+        /* --- 3. Navigation Bar --- */
+        .navbar {
+            padding: 24px 0;
+            /* background: transparent; */ /* Replaced by glassmorphism */
+            /* position: absolute; */ /* Changed to fixed */
+            position: fixed; /* Sticks to the top */
+            width: 100%;
+            z-index: 1000;
+
+            /* --- Glassmorphism Styles Added --- */
+            background: rgba(255, 255, 255, 0.05); /* Semi-transparent background */
+            backdrop-filter: blur(10px); /* The blur effect */
+            -webkit-backdrop-filter: blur(10px); /* For Safari */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle bottom border */
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            text-decoration: none;
+            font-weight: 700;
+            
+            /* --- MODIFIED: Converted to flex container --- */
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Space between icon and text */
+
+            /* --- REMOVED gradient properties from parent --- */
+            /* background: linear-gradient(135deg, var(--dark-charcoal), var(--purple)); 
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent; */
+            
+            color: var(--text-light); /* Added a fallback color */
+        }
+        
+        /* --- NEW: Style for the icon --- */
+        .nav-logo i {
+            color: var(--neon-mint);
+            font-size: 1.5rem; /* Slightly smaller than text */
+            background: rgba(0, 255, 198, 0.1); /* Faint background */
+            border-radius: 50%;
+            /* padding: 6px; */ /* <-- Removed this padding */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(0, 255, 198, 0.2);
+            
+            /* --- ADDED: Set explicit width and height to force a circle --- */
+            width: 2.5rem;  /* 40px */
+            height: 2.5rem; /* 40px */
+        }
+
+        /* --- NEW: Apply gradient only to text span --- */
+        .nav-logo span {
+            background: linear-gradient(135deg, var(--dark-charcoal), var(--purple)); 
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            font-family: var(--font-subheading);
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-mint);
+            text-shadow: 0 0 10px var(--neon-mint);
+        }
+        
+        /* Mobile Nav Toggle */
+        .nav-toggle {
+            display: none;
+            color: var(--text-light);
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1001; /* Ensure toggle is above active menu */
+        }
+
+        /* --- 4. Home Section (Hero) --- */
+        .home-section {
+            height: 100vh;
+            min-height: 700px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            text-align: left; /* Changed from 'center' */
+            /* padding-top: 100px; */ /* Original value */
+            padding-top: 150px; /* Increased to add more space below navbar */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Optional: Background motion graphics effect */
+        .home-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(45deg, rgba(13, 13, 13, 0.1) 25%, transparent 25%, transparent 75%, rgba(13, 13, 13, 0.1) 75%),
+                        linear-gradient(45deg, rgba(13, 13, 13, 0.1) 25%, transparent 25%, transparent 75%, rgba(13, 13, 13, 0.1) 75%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+            animation: moveLines 10s linear infinite;
+            opacity: 0.2;
+        }
+        
+        @keyframes moveLines {
+            0% { background-position: 0 0, 30px 30px; }
+            100% { background-position: 0 60px, 30px 90px; }
+        }
+
+        .home-content {
+            position: relative; /* Ensure content is above pseudo-element */
+            z-index: 10;
+        }
+
+        .home-content h1 {
+            font-size: 4rem;
+            margin-bottom: 24px;
+        }
+        
+        .home-content .subheadline {
+            font-family: var(--font-subheading);
+            font-size: 1.5rem;
+            color: var(--text-light);
+            max-width: 600px; /* Changed from 700px for better wrapping */
+            margin: 0 0 32px 0; /* Changed from 'auto' to left-align */
+        }
+        
+        /* --- NEW: Glass Card Style for Sections --- */
+        .container.topic-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 198, 0.2); /* Neon-mint border */
+            box-shadow: 0 8px 32px rgba(0, 255, 198, 0.1); /* Neon-mint glow */
+            border-radius: var(--radius-smooth);
+            padding: 48px; /* Override default container padding */
+        }
+        
+        .home-ctas {
+            display: flex;
+            justify-content: flex-start; /* Changed from 'center' */
+            gap: 20px;
+        }
+        
+        .home-offerings {
+            display: flex;
+            justify-content: flex-start; /* Changed from 'center' */
+            gap: 32px;
+            margin-top: 60px;
+        }
+        
+        .offering-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 24px;
+            border-radius: var(--radius-smooth);
+            width: 250px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .offering-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .offering-card i {
+            font-size: 2.5rem;
+            color: var(--neon-mint);
+            margin-bottom: 16px;
+        }
+        
+        .offering-card h3 {
+            font-size: 1.25rem;
+            color: var(--text-light);
+        }
+
+        /* --- 5. Our Courses Section --- */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+        
+        .course-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-smooth);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 25px rgba(123, 47, 247, 0.3);
+        }
+        
+        .course-card-image {
+            height: 200px;
+            background: var(--gradient-primary); /* Placeholder */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .course-card-image i {
+            font-size: 4rem;
+            color: var(--text-light);
+            opacity: 0.8;
+        }
+        
+        .course-card-content {
+            padding: 24px;
+        }
+        
+        .course-card-content h3 {
+            margin-bottom: 12px;
+        }
+        
+        .course-card-content .btn {
+            margin-top: 24px;
+        }
+
+        /* --- NEW: Course Card Details --- */
+        .course-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            gap: 10px; /* Space between items if they wrap */
+            margin-top: 20px; /* Space above details */
+            margin-bottom: -8px; /* Counteract paragraph margin for button */
+            padding: 0 4px; /* Small padding */
+        }
+
+        .course-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            font-family: var(--font-subheading);
+            color: var(--text-muted);
+        }
+
+        .course-detail-item i {
+            color: var(--neon-mint);
+            font-size: 1.1rem;
+        }
+
+        /* --- 6. Projects Section --- */
+        /* --- REMOVED conflicting background and color styles --- */
+        /* .projects-section {
+            background-color: var(--soft-gray);
+            color: var(--dark-charcoal);
+        } */
+        
+        /* --- REMOVED conflicting text color styles --- */
+        /* .projects-section h2, .projects-section h3 {
+            color: var(--dark-charcoal);
+        } */
+        
+        /* .projects-section .section-subtitle {
+            color: #555;
+        } */
+        
+        .projects-grid {
+            display: grid;
+            /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */ /* Old */
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* New */
+            gap: 24px;
+            justify-items: center; /* Center cards in their grid cells */
+        }
+        
+        /* --- REMOVED old project card styles --- */
+        /* .project-card { ... } */
+        /* .project-card:hover { ... } */
+        /* .project-card i { ... } */
+        /* .project-card h3 { ... } */
+        /* .project-card p { ... } */
+
+        /* --- NEW Project Card Styles from user --- */
+        .projects-section .project-card {
+            background-color: #000; /* Card background */
+            border: 1px solid #444; /* Subtle gray border */
+            border-radius: 16px; /* Rounded corners */
+            width: 320px; /* Card width */
+            padding: 24px; /* Space inside the card */
+            box-sizing: border-box; /* Ensures padding doesn't break width */
+            text-align: center; /* Centers all the text */
+            color: #ffffff; /* White text color */
+            overflow: hidden; /* Keeps image corners neat */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .projects-section .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(233, 94, 31, 0.2); /* Orange glow on hover */
+        }
+
+        .projects-section .project-card .category {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #E95E1F; /* Use the orange for category */
+        }
+
+        .projects-section .project-card .card-image {
+            width: 100%;
+            /* height: auto; */ /* Replaced with fixed height */
+            height: 250px; /* ADDED fixed height for uniformity */
+            object-fit: cover; /* ADDED to make images fill the space */
+            border-radius: 8px; /* Slightly rounded corners for the image */
+            margin-bottom: 20px;
+            background-color: #333; /* ADDED fallback color */
+            
+            /* --- REMOVED filter to show color images --- */
+            /* filter: grayscale(100%) contrast(120%); */
+        }
+
+        .projects-section .project-card .title {
+            font-size: 1.3rem; /* Larger font for the main title */
+            font-weight: bold;
+            line-height: 1.4; /* Spacing between lines */
+            margin-bottom: 25px;
+            color: #ffffff; /* Ensure title is white */
+        }
+
+        .projects-section .project-card .buy-button {
+            display: inline-block; /* Allows padding and centering */
+            background-color: #E95E1F; /* Orange button color from image */
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 12px 40px; /* Vertical and horizontal padding */
+            border-radius: 50px; /* Makes it a "pill" shape */
+            text-decoration: none; /* Removes underline from the link */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+        }
+
+        .projects-section .project-card .buy-button:hover {
+            background-color: #FF7A3C; /* Lighter orange on hover */
+            transform: scale(1.05);
+        }
+        /* --- End of NEW Project Card Styles --- */
+        
+        .projects-cta {
+            text-align: center;
+            margin-top: 48px;
+        }
+
+        /* --- 7. Consultation Section --- */
+        /* --- REMOVED conflicting background styles --- */
+        /* .consultation-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        } */
+        
+        .consultation-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+        
+        .consultation-text {
+            max-width: 500px;
+        }
+        
+        .consultation-form .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .consultation-form input,
+        .consultation-form textarea {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-family: var(--font-body);
+            font-size: 1rem;
+        }
+        
+        .consultation-form input::placeholder,
+        .consultation-form textarea::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .consultation-form .btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 1.1rem;
+            background: var(--neon-mint);
+            color: var(--dark-charcoal);
+            box-shadow: 0 0 20px rgba(0, 255, 198, 0.4);
+        }
+        
+        .consultation-form .btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(0, 255, 198, 0.6);
+        }
+
+        /* --- 8. Contact Section --- */
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+        }
+        
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .contact-info-item i {
+            font-size: 1.75rem;
+            color: var(--neon-mint);
+            margin-top: 4px;
+        }
+        
+        .contact-info-item p {
+            margin-bottom: 4px;
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 20px;
+            margin-top: 32px;
+        }
+        
+        .social-icons a {
+            font-size: 2rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--neon-mint);
+            transform: translateY(-4px);
+        }
+        
+        /* Re-use consultation form styles */
+        .contact-form .form-group { margin-bottom: 20px; }
+        .contact-form input, .contact-form textarea {
+            width: 100%; padding: 14px; border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light); font-family: var(--font-body); font-size: 1rem;
+        }
+        .contact-form .btn { width: 100%; }
+
+        /* --- 9. Footer --- */
+        .footer {
+            padding: 40px 0;
+            background: #090909; /* Slightly lighter than main bg */
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .footer-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-family: var(--font-subheading);
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--text-light);
+        }
+        
+        .footer .copyright {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        /* --- 10. Responsive Design --- */
+        /* MOVED all mobile styles to the 992px breakpoint for better tablet support */
+        @media (max-width: 992px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 2.2rem; }
+            
+            .home-offerings {
+                flex-direction: column;
+                align-items: flex-start; /* Changed from 'center' to 'flex-start' */
+            }
+
+            /* --- Copied from 768px breakpoint --- */
+            section { padding: 60px 0; }
+            
+            .nav-links {
+                display: none; /* Hide by default on mobile */
+                flex-direction: column;
+                gap: 20px;
+                background: var(--dark-charcoal);
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh; /* Full screen */
+                justify-content: center;
+                align-items: center;
+                padding-top: 80px; /* Space for logo/close button */
+                transition: transform 0.3s ease-in-out;
+                transform: translateX(100%); /* Start off-screen */
+            }
+
+            /* This class will be toggled by JavaScript */
+            .nav-links.nav-links-active {
+                display: flex;
+                transform: translateX(0); /* Slide in */
+            }
+
+            .nav-links a {
+                font-size: 1.5rem; /* Make links bigger */
+            }
+            
+            .nav-toggle {
+                display: block; /* Show the toggle button */
+            }
+            
+            .home-section {
+                height: auto;
+                padding: 150px 0 80px;
+            }
+            
+            .home-content h1 { 
+                font-size: 2.5rem; /* Was 3.2rem, using mobile size for better fit */
+            }
+            .home-content .subheadline { font-size: 1.2rem; }
+            
+            .home-ctas {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start; /* Changed from 'center' */
+            }
+            
+            .btn {
+                width: 80%;
+                max-width: 300px;
+            }
+            
+            /* --- NEW: Responsive padding for topic cards --- */
+            .container.topic-card {
+                padding: 24px;
+            }
+            
+            .consultation-content, .contact-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .consultation-text {
+                /* Removed 'text-align: center;' to keep alignment consistent */
+            }
+            /* --- End of copied styles --- */
+        }
+        
+        /* REMOVED the old 768px breakpoint as its styles are now in the 992px breakpoint */
+        
+        /* --- NEW: 11. Modal (Popup Form) Styles --- */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 2000; /* Sit on top of everything */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            
+            /* Use flex to center the modal content */
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* This class will be added by JS to show the modal */
+        .modal.modal-active {
+            display: flex;
+        }
+
+        .modal-content {
+            /* Reuse the topic-card style for the glass effect */
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 198, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 255, 198, 0.1);
+            border-radius: var(--radius-smooth);
+            
+            margin: auto;
+            padding: 32px;
+            width: 90%;
+            max-width: 500px; /* Max width for the popup */
+            position: relative;
+            color: var(--text-light);
+            text-align: center; /* Center text for success message */
+        }
+        
+        .modal-content h2 {
+            margin-bottom: 16px;
+        }
+
+        .modal-content .icon {
+            font-size: 3rem;
+            color: var(--neon-mint);
+            margin-bottom: 16px;
+        }
+
+        .modal-close {
+            color: var(--text-muted);
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: var(--neon-mint);
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <!-- MODIFIED: Added icon and span for separate styling -->
+            <a href="#" class="nav-logo">
+                <i class="ri-flask-line"></i> 
+                <span>Crack Code Lab</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#courses">Our Courses</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#consultation">Free Consultation</a></li>
+                <!-- ADDED Contact Us link -->
+                <li><a href="#contact">Contact Us</a></li>
+                
+            </ul>
+            <i class="ri-menu-line nav-toggle"></i>
+        </div>
+    </nav>
+
+    <!-- 2. Home Section -->
+    <section class="home-section" id="home">
+        <div class="container">
+            <div class="home-content">
+                <h1>Learn, Build, and Grow with Crack Code Lab</h1>
+                <p class="subheadline">Turn your ideas into real projects — gain industry skills through hands-on learning.</p>
+                <div class="home-ctas">
+                    <a href="#courses" class="btn btn-primary">Explore Courses</a>
+                    <a href="#consultation" class="btn btn-secondary">Get Free Consultation</a>
+                </div>
+                
+                <div class="home-offerings">
+                    <div class="offering-card">
+                        <i class="ri-code-s-slash-line"></i>
+                        <h3>Build Real Projects</h3>
+                    </div>
+                    <div class="offering-card">
+                        <i class="ri-user-voice-line"></i>
+                        <h3>Learn From Experts</h3>
+                    </div>
+                    <div class="offering-card">
+                        <i class="ri-award-line"></i>
+                        <h3>Get Certified Internships</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Our Courses Section -->
+    <section class="courses-section" id="courses">
+        <div class="container topic-card">
+            <h2 class="section-title">Learn by Doing — Career-Ready Tech Courses</h2>
+            <p class="section-subtitle">From coding fundamentals to AI innovations.</p>
+            
+            <div class="courses-grid">
+                <!-- Course Card 1 -->
+                <div class="course-card">
+                    <div class="course-card-image"><i class="ri-database-2-line"></i></div>
+                    <div class="course-card-content">
+                        <h3>Python for Data Science</h3>
+                        <p>Master Python and its libraries for data analysis, visualization, and manipulation.</p>
+                        <!-- ADDED DETAILS -->
+                        <div class="course-details">
+                            <span class="course-detail-item">
+                                <i class="ri-time-line"></i> 8 Weeks
+                            </span>
+                            <span class="course-detail-item">
+                                <i class="ri-computer-line"></i> Online
+                            </span>
+                        </div>
+                        <a href="#" class="btn btn-primary">Enroll Now</a>
+                    </div>
+                </div>
+                <!-- Course Card 2 -->
+                <div class="course-card">
+                    <div class="course-card-image"><i class="ri-window-line"></i></div>
+                    <div class="course-card-content">
+                        <h3>Full Stack Web Development</h3>
+                        <p>Learn front-end (React) and back-end (Node.js) to build complete web applications.</p>
+                        <!-- ADDED DETAILS -->
+                        <div class="course-details">
+                            <span class="course-detail-item">
+                                <i class="ri-time-line"></i> 12 Weeks
+                            </span>
+                            <span class="course-detail-item">
+                                <i class="ri-group-line"></i> Online & Offline
+                            </span>
+                        </div>
+                        <a href="#" class="btn btn-primary">Enroll Now</a>
+                    </div>
+                </div>
+                <!-- Course Card 3 -->
+                <div class="course-card">
+                    <div class="course-card-image"><i class="ri-robot-2-line"></i></div>
+                    <div class="course-card-content">
+                        <h3>Machine Learning & AI</h3>
+                        <p>Dive into algorithms, neural networks, and AI models to solve complex problems.</p>
+                        <!-- ADDED DETAILS -->
+                        <div class="course-details">
+                            <span class="course-detail-item">
+                                <i class="ri-time-line"></i> 10 Weeks
+                            </span>
+                            <span class="course-detail-item">
+                                <i class="ri-computer-line"></i> Online
+                            </span>
+                        </div>
+                        <a href="#" class="btn btn-primary">Enroll Now</a>
+                    </div>
+                </div>
+                <!-- Course Card 4 -->
+                <div class="course-card">
+                    <div class="course-card-image"><i class="ri-briefcase-4-line"></i></div>
+                    <div class="course-card-content">
+                        <h3>Internship Readiness Bootcamp</h3>
+                        <p>Get your portfolio, resume, and interview skills ready for the tech industry.</p>
+                        <!-- ADDED DETAILS -->
+                        <div class="course-details">
+                            <span class="course-detail-item">
+                                <i class="ri-time-line"></i> 4 Weeks
+                            </span>
+                            <span class="course-detail-item">
+                                <i class="ri-building-line"></i> Offline
+                            </span>
+                        </div>
+                        <a href="#" class="btn btn-primary">Enroll Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Projects Section -->
+    <section class="projects-section" id="projects">
+        <div class="container topic-card">
+            <h2 class="section-title">Build Real-World Projects</h2>
+            <p class="section-subtitle">Practical learning through innovation.</p>
+            
+            <div class="projects-grid">
+                <!-- Project Card 1 -->
+                <div class="project-card">
+                    <p class="category">AI & Data Science</p>
+                    <!-- UPDATED IMAGE -->
+                    <img src="https://source.unsplash.com/400x250/?medical,ai" alt="AI Disease Prediction Project" class="card-image" onerror="this.src='https://placehold.co/400x250/333/FFF?text=AI+Project'">
+                    <h3 class="title">AI Disease Prediction Model</h3>
+                    <a href="#" class="buy-button">Buy Now</a>
+                </div>
+                <!-- Project Card 2 -->
+                <div class="project-card">
+                    <p class="category">Web Development</p>
+                    <!-- UPDATED IMAGE -->
+                    <img src="https://source.unsplash.com/400x250/?ecommerce,website" alt="E-Commerce Platform Project" class="card-image" onerror="this.src='https://placehold.co/400x250/333/FFF?text=Web+Project'">
+                    <h3 class="title">Full-Stack E-Commerce Platform</h3>
+                    <a href="#" class="buy-button">Buy Now</a>
+                </div>
+                <!-- Project Card 3 -->
+                <div class="project-card">
+                    <p class="category">IoT</p>
+                    <!-- UPDATED IMAGE -->
+                    <img src="https://source.unsplash.com/400x250/?iot,agriculture" alt="Smart Agriculture Project" class="card-image" onerror="this.src='https://placehold.co/400x250/333/FFF?text=IoT+Project'">
+                    <h3 class="title">IoT Smart Agriculture System</h3>
+                    <a href="#" class="buy-button">Buy Now</a>
+                </div>
+                <!-- Project Card 4 -->
+                <div class="project-card">
+                    <p class="category">Automation</p>
+                    <!-- UPDATED IMAGE -->
+                    <img src="https://source.unsplash.com/400x250/?chatbot,ai" alt="Automation Chatbot Project" class="card-image" onerror="this.src='https://placehold.co/400x250/333/FFF?text=AI+Chatbot'">
+                    <h3 class="title">Customer Service AI Chatbot</h3>
+                    <a href="#" class="buy-button">Buy Now</a>
+                </div>
+                <!-- Project Card 5 -->
+                <div class="project-card">
+                    <p class="category">Deep Learning</p>
+                    <!-- UPDATED IMAGE -->
+                    <img src="https://source.unsplash.com/400x250/?cctv,security" alt="CCTV Tracking Project" class="card-image" onerror="this.src='https://placehold.co/400x250/333/FFF?text=CCTV+Project'">
+                    <h3 class="title">Secure CCTV Missing Person Tracker</h3>
+                    <a href="#" class="buy-button">Buy Now</a>
+                </div>
+            </div>
+            
+            <div class="projects-cta">
+                <a href="#" class="btn btn-primary">Start Building Today</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: 5. About Section -->
+    <section class="about-section" id="about">
+        <div class="container topic-card">
+            <h2 class="section-title">About Crack Code Lab</h2>
+            <p class="section-subtitle">We are the bridge between academic learning and real-world industry experience.</p>
+            
+            <!-- Added inline styles for a quick layout, can be moved to <style> block -->
+            <div class="about-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 32px; align-items: center;">
+                <div class="about-text">
+                    <p>Founded on the principle that practical skill is the key to a successful tech career, Crack Code Lab was born. We saw countless talented students graduate with theoretical knowledge but no hands-on experience, struggling to land their first job.</p>
+                    <p>Our mission is simple: to empower the next generation of innovators. We do this by focusing on project-based learning, mentorship from industry experts, and providing genuine internship opportunities that build a portfolio, not just a resume.</p>
+                </div>
+                <div class="about-image-placeholder" style="background: var(--gradient-primary); border-radius: var(--radius-smooth); min-height: 250px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 24px; text-align: center;">
+                    <i class="ri-team-line" style="font-size: 4rem; color: var(--text-light); opacity: 0.8; margin-bottom: 16px;"></i>
+                    <h3 style="color: var(--text-light);">Our Team & Mentors</h3>
+                    <p style="color: var(--text-light); opacity: 0.9; margin-bottom: 0;">Industry veterans dedicated to your growth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Free Consultation Section (was 5) -->
+    <section class="consultation-section" id="consultation">
+        <div class="container topic-card">
+            <div class="consultation-content">
+                <div class="consultation-text">
+                    <h2>Not Sure Where to Start? We’ll Guide You.</h2>
+                    <!-- Removed inline style for cleaner CSS control -->
+                    <p class="section-subtitle" style="margin-left: 0; margin-bottom: 0;">
+                        Book a free one-on-one session with our experts to choose your ideal tech path.
+                    </p>
+                </div>
+                <!-- Fixed typo: 'classid' changed to 'id' -->
+                <form id="consultationForm" class="consultation-form">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <!-- ADDED CONTACT NUMBER FIELD -->
+                    <div class="form-group">
+                        <input type="tel" name="phone" placeholder="Your Contact Number">
+                    </div>
+                    <!-- END OF ADDED FIELD -->
+                    <!-- FIXED: Wrapped textarea in a 'form-group' div -->
+                    <div class="form-group">
+                        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <!-- FIXED: Changed button text to match section -->
+                    <button type="submit" class="btn">Book Free Consultation</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: 7. Contact Us Section -->
+    <section class="contact-section" id="contact">
+        <div class="container topic-card">
+            <h2 class="section-title">Let’s Connect and Collaborate</h2>
+            <p class="section-subtitle">Have a question, a project idea, or want to partner with us? Reach out!</p>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-info-item">
+                        <i class="ri-map-pin-line"></i>
+                        <div>
+                            <p>Chennai, Tamil Nadu, India</p>
+                            <span>Our main headquarters</span>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="ri-mail-send-line"></i>
+                        <div>
+                            <p>support@crackcodelab.com</p>
+                            <span>Email us for support</span>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="ri-phone-line"></i>
+                        <div>
+                            <p>+91 98765 43210</p>
+                            <span>Call us for queries</span>
+                        </div>
+                    </div>
+                    
+                    <div class="social-icons">
+                        <a href="#" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="ri-linkedin-box-fill"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="ri-github-fill"></i></a>
+                    </div>
+                </div>
+                
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <!-- ADDED CONTACT NUMBER FIELD -->
+                    <div class="form-group">
+                        <input type="tel" name="phone" placeholder="Your Contact Number ">
+                    </div>
+                    <!-- END OF ADDED FIELD -->
+                    <div class="form-group">
+                        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Footer Section (was 7) -->
+    <footer class="footer">
+        <div class="container">
+            <ul class="footer-links">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Careers</a></li>
+            </ul>
+            <p class="copyright">© 2025 Crack Code Lab. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- --- NEW: Form Success Modal --- -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div class="icon">
+                <i class="ri-checkbox-circle-line"></i>
+            </div>
+            <h2>Success!</h2>
+            <p>Your message has been sent successfully. We'll get back to you soon.</p>
+        </div>
+    </div>
+    <!-- --- End of Modal --- -->
+
+
+    <!-- ADDED JAVASCRIPT FUNCTIONS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 1. Mobile Menu Toggle Function ---
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (navToggle && navLinks) {
+                navToggle.addEventListener('click', () => {
+                    // Toggle the 'active' class on the nav links list
+                    navLinks.classList.toggle('nav-links-active');
+
+                    // Toggle the icon between menu and close
+                    if (navLinks.classList.contains('nav-links-active')) {
+                        navToggle.classList.remove('ri-menu-line');
+                        navToggle.classList.add('ri-close-line');
+                    } else {
+                        navToggle.classList.add('ri-menu-line');
+                        navToggle.classList.remove('ri-close-line');
+                    }
+                });
+            }
+
+            // --- 2. Smooth Scroll & Close Mobile Menu on Link Click ---
+            const allNavLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+            
+            allNavLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Prevent default anchor behavior
+                    e.preventDefault(); 
+                    
+                    const href = this.getAttribute('href');
+                    const targetElement = document.querySelector(href);
+                    
+                    if (targetElement) {
+                        // Smoothly scroll to the target section
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+
+                        // If mobile menu is active, close it
+                        if (navLinks.classList.contains('nav-links-active')) {
+                            navLinks.classList.remove('nav-links-active');
+                            navToggle.classList.add('ri-menu-line');
+                            navToggle.classList.remove('ri-close-line');
+                        }
+                    }
+                });
+            });
+
+            // --- 3. Basic Form Validation (Example) ---
+            // You would replace this with a real form submission (e.g., to Netlify, Formspree, or your backend)
+            const consultationForm = document.getElementById('consultationForm');
+            const contactForm = document.getElementById('contactForm');
+            
+            // --- NEW: Get Success Modal Elements ---
+            const successModal = document.getElementById('successModal');
+            const successModalClose = successModal.querySelector('.modal-close');
+
+
+            const handleFormSubmit = (e) => {
+                e.preventDefault(); // Stop the form from submitting normally
+                const form = e.target;
+                const submitButton = form.querySelector('button[type="submit"]');
+                
+                // Simple check for required fields
+                let isValid = true;
+                form.querySelectorAll('[required]').forEach(input => {
+                    if (!input.value) {
+                        isValid = false;
+                        input.style.borderColor = 'red'; // Highlight empty required fields
+                    } else {
+                        input.style.borderColor = ''; // Reset border
+                    }
+                });
+
+                if (isValid) {
+                    // --- MODIFIED: Show success modal instead of changing button text ---
+                    
+                    // Show the modal
+                    successModal.classList.add('modal-active');
+                    
+                    // Reset the form
+                    form.reset(); 
+                    
+                    // Hide the modal after 3 seconds
+                    setTimeout(() => {
+                        successModal.classList.remove('modal-active');
+                    }, 3000);
+                    
+                    // --- REMOVED OLD LOGIC ---
+                    // const originalText = submitButton.textContent;
+                    // submitButton.textContent = 'Submitted!';
+                    // submitButton.disabled = true;
+                    
+                    // setTimeout(() => {
+                    //     submitButton.textContent = originalText;
+                    //     submitButton.disabled = false;
+                    //     form.reset(); // Clear the form
+                    // }, 2000);
+
+                } else {
+                    // You could show a more specific error message here
+                    console.log('Form is invalid');
+                }
+            };
+
+            if (consultationForm) {
+                consultationForm.addEventListener('submit', handleFormSubmit);
+            }
+            if (contactForm) {
+                contactForm.addEventListener('submit', handleFormSubmit);
+            }
+            
+            // --- NEW: Add close logic for the success modal ---
+            if (successModal) {
+                // Close modal when 'X' is clicked
+                successModalClose.addEventListener('click', () => {
+                    successModal.classList.remove('modal-active');
+                });
+
+                // Close modal when user clicks on the dark background
+                successModal.addEventListener('click', (e) => {
+                    if (e.target === successModal) { // Check if the click is on the background itself
+                        successModal.classList.remove('modal-active');
+                    }
+                });
+            }
+
+        });
+    </script>
+
+</body>
+</html>
+
